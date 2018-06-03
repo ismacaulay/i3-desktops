@@ -1,6 +1,6 @@
 # i3-desktops
 
-Adds multiple desktops to the [i3 window manager](https://i3wm.org/). Each monitor gets its own set of workspaces similar to [awesomewm](https://awesomewm.org/).
+Changes each monitor into individual desktops [i3 window manager](https://i3wm.org/) similar to the behaviour of [awesome](https://awesomewm.org/).
 
 ### Dependencies
 
