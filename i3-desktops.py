@@ -2,15 +2,17 @@
 
 import logging
 import sys
-import i3
+import i3ipc
+
+i3 = i3ipc.Connection()
 
 LOGGER = logging.getLogger()
 LOG_FILE = '/tmp/i3-desktops.log'
 
 OUTPUT_MAPPING = {
-    'HDMI-0': 1,
-    'DP-2': 2,
-    'HDMI-1': 3,
+    'HDMI-0': 2,
+    # 'DVI-D-0': 1,
+    'DP-0': 1,
 }
 
 def setup_logger():
@@ -24,8 +26,8 @@ def setup_logger():
 
 def get_focused_output():
     for workspace in i3.get_workspaces():
-        if workspace['focused']:
-            return workspace['output']
+        if workspace.focused:
+            return workspace.output
     raise LookupError('No focused output found')
 
 def get_workspace_prefix(output):
@@ -41,7 +43,10 @@ def get_workspace(ws_num, prefix, num):
     return workspace
 
 def switch_workspace(name):
-    i3.workspace('{}'.format(name))
+    return i3.command(f'workspace {name}')[0]
+
+def move_container_to_workspace(name):
+    return i3.command(f'move container to workspace {name}')[0]
 
 def change_workspace(num):
     """
@@ -52,10 +57,10 @@ def change_workspace(num):
     prefix = get_workspace_prefix(output)
     ws_num = get_workspace_num(prefix, num)
     workspace = get_workspace(ws_num, prefix, num)
-    cmd = '{}'.format(workspace)
-    success = i3.workspace(cmd)
-    if not success:
-        LOGGER.debug('change_workspace: faild to run command: {}'.format(cmd))
+    result = switch_workspace(f'{workspace}')
+    if not result.success:
+        LOGGER.debug(f'change_workspace: faild to run command: {workspace}')
+        LOGGER.debug(result.error)
 
 def move_container(num):
     LOGGER.debug('move_container: requested workspace {}'.format(num))
@@ -63,10 +68,10 @@ def move_container(num):
     prefix = get_workspace_prefix(output)
     ws_num = get_workspace_num(prefix, num)
     workspace = get_workspace(ws_num, prefix, num)
-    cmd = 'container to workspace {}'.format(workspace)
-    success = i3.move(cmd)
-    if not success:
-        LOGGER.debug('move_container: faild to run command: {}'.format(cmd))
+    result = move_container_to_workspace(workspace)
+    if not result.success:
+        LOGGER.debug(f'move_container: faild to move container to workspace {workspace}')
+        LOGGER.debug(result.error)
 
 if __name__ == '__main__':
     setup_logger()

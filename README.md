@@ -4,7 +4,7 @@ Changes each monitor into individual desktops [i3 window manager](https://i3wm.o
 
 ### Dependencies
 
-- [i3-py](https://github.com/ziberna/i3-py)
+- [i3ipc-python](https://github.com/altdesktop/i3ipc-python)
 
 ### Usage
 
