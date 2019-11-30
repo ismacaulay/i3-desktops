@@ -1,6 +1,6 @@
 # i3-desktops
 
-Changes each monitor into individual desktops [i3 window manager](https://i3wm.org/) similar to the behaviour of [awesome](https://awesomewm.org/).
+Changes each monitor into individual desktops on the [i3 window manager](https://i3wm.org/) similar to the behaviour of [awesome](https://awesomewm.org/).
 
 ### Dependencies
 
